@@ -1,0 +1,43 @@
+grafo = TinkerGraph.open()
+g = grafo.traversal()
+
+jose = g.addV("persona").property(T.id, 1).property("nombre", "Jose").next()
+jorge = g.addV("persona").property(T.id, 2).property("nombre", "Jorge").next()
+javier = g.addV("persona").property(T.id, 3).property("nombre", "Javier").next()
+
+libeerarte = g.addV("bar").property(T.id, 4).property("nombre", "Libeerarte").next()
+roma = g.addV("bar").property(T.id, 5).property("nombre", "Roma").next()
+
+hlupulus = g.addV("cerveza").property(T.id, 6).property("marca", "Humus Lupulus").next()
+lumen = g.addV("cerveza").property(T.id, 7).property("marca", "Lumen").next()
+quilmes = g.addV("cerveza").property(T.id, 8).property("marca", "Quilmes").next()
+
+g.addE("sirve").from(libeerarte).to(hlupulus).property(T.id, 9)
+g.addE("sirve").from(libeerarte).to(lumen).property(T.id, 10)
+g.addE("sirve").from(roma).to(quilmes).property(T.id, 11)
+
+g.addE("leGusta").from(jose).to(hlupulus).property(T.id, 12)
+g.addE("leGusta").from(jorge).to(lumen).property(T.id, 13)
+g.addE("leGusta").from(javier).to(quilmes).property(T.id, 14)
+
+g.addE("frecuenta").from(jose).to(libeerarte).property(T.id, 15)
+g.addE("frecuenta").from(jorge).to(roma).property(T.id, 16)
+g.addE("frecuenta").from(javier).to(roma).property(T.id, 17)
+
+// Listar todas las personas
+g.V().hasLabel('persona').values()
+
+// Todos los bares que sirven Quilmes
+g.V().has('cerveza', 'marca', 'Quilmes').in().hasLabel('bar').values()
+
+// Las cervezas que le gustan a José
+g.V().has('nombre', 'Jose').out().hasLabel('cerveza').values()
+
+// Los bares que sirven la cerveza que le gusta a Jorge
+g.V().has('nombre', 'Jorge').out().hasLabel('cerveza').in().hasLabel('bar').values()
+
+// Las personas que frecuentan bares que sirven alguna cerveza que les gusta
+
+
+// Las personas que frecuentan los bares que sirven la cerveza que le gusta Javier
+g.V().has('nombre', 'Javier').out().hasLabel('cerveza').in().hasLabel('bar').in().hasLabel('persona')not(cyclicPath()).values()
