@@ -37,7 +37,7 @@ g.V().has('nombre', 'Jose').out().hasLabel('cerveza').values()
 g.V().has('nombre', 'Jorge').out().hasLabel('cerveza').in().hasLabel('bar').values()
 
 // Las personas que frecuentan bares que sirven alguna cerveza que les gusta
-
+g.V().hasLabel('persona').out('frecuenta').out('sirve').in('leGusta').cyclicPath().values()
 
 // Las personas que frecuentan los bares que sirven la cerveza que le gusta Javier
 g.V().has('nombre', 'Javier').out().hasLabel('cerveza').in().hasLabel('bar').in().hasLabel('persona')not(cyclicPath()).values()
